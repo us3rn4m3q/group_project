@@ -1,0 +1,166 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - api-gateway
+    networks:
+      - app-network
+
+  api-gateway:
+    build:
+        context: .
+        dockerfile: api-gateway/Dockerfile
+    environment:
+      - PORT=8080
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=parsers_db
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./api-gateway:/app/api-gateway
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: parsers_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    ports:
+      - "5432"
+    networks:
+      - app-network
+
+  bitshop:
+    build:
+      context: ./cmd/scraper/bitshop
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    depends_on:
+      - db-bitshop
+    environment:
+      - PORT=9001
+      - DB_HOST=db-bitshop
+      - DB_PORT=5432
+      - DB_USER=bitshop
+      - DB_PASSWORD=bitshoppassword
+      - DB_NAME=bitshop_db
+    networks:
+      - app-network
+
+  db-bitshop:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: bitshop
+      POSTGRES_PASSWORD: bitshoppassword
+      POSTGRES_DB: bitshop_db
+    volumes:
+      - pgdata-bitshop:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  jetman:
+    build: ./cmd/scraper/jetman
+    depends_on:
+      - db-jetman
+    environment:
+      - PORT=9002
+      - DB_HOST=db-jetman
+      - DB_PORT=5442
+      - DB_USER=jetman
+      - DB_PASSWORD=jetmanpass
+      - DB_NAME=jetman_db
+    ports:
+      - "9002:9002"
+    networks:
+      - app-network
+
+  db-jetman:
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: jetman
+        POSTGRES_PASSWORD: jetmanpassword
+        POSTGRES_DB: jetman_db
+      volumes:
+        - pgdata-jetman:/var/lib/postgresql/data
+      networks:
+        - app-network
+
+  ram:
+    build: ./cmd/scraper/ram
+    depends_on:
+      - db-ram
+    environment:
+      - PORT=9003
+      - DB_HOST=db-ram
+      - DB_PORT=5443
+      - DB_USER=ram
+      - DB_PASSWORD=rampass
+      - DB_NAME=ram_db
+    ports:
+      - "9003:9003"
+    networks:
+      - app-network
+
+  db-ram:
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: ram
+        POSTGRES_PASSWORD: rampass
+        POSTGRES_DB: ram_db
+      volumes:
+        - pgdata-ram:/var/lib/postgresql/data
+      networks:
+        - app-network
+
+  xcore:
+    build: ./cmd/scraper/xcore
+    depends_on:
+      - db-xcore
+    environment:
+      - PORT=9004
+      - DB_HOST=db-xcore
+      - DB_PORT=5444
+      - DB_USER=xcore
+      - DB_PASSWORD=xcorepassword
+      - DB_NAME=xcore_db
+    ports:
+      - "9004:9004"
+    networks:
+      - app-network
+
+  db-xcore:
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: xcore
+        POSTGRES_PASSWORD: xcorepass
+        POSTGRES_DB: xcore_db
+      volumes:
+        - pgdata-xcore:/var/lib/postgresql/data
+      networks:
+        - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgdata-bitshop:
+  pgdata-jetman:
+  pgdata-ram:
+  pgdata-xcore:
