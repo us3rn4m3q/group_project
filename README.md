@@ -1,72 +1,84 @@
-Website Parsing Microservices
+#  Website Parsing Microservices
 
-This project implements a microservice-based architecture for parsing data from various websites. The system is built with Docker and consists of multiple independent services.
+This project implements a **microservice-based architecture** for parsing data from various websites.  
+The system is built with **Docker** and consists of multiple independent services.
 
- Features
+---
 
-Parallel parsing of multiple websites
+##  Features
 
-REST API for managing parsers
+-  Parallel parsing of multiple websites  
+-  REST API for managing parsers  
+-  Persistent storage of parsing history and results  
+-  Full containerization of all components  
+-  Centralized routing through API Gateway  
+-  Scalable architecture  
 
-Persistent storage of parsing history and results
+---
 
-Full containerization of all components
+## 🏗 Architecture
 
-Centralized routing through API Gateway
+├── api-gateway/ # Main service (HTTP routing, aggregation)
+├── bitshop/ # Microservice 1 (data parsing)
+├── jetman/ # Microservice 2 (data parsing)
+├── xcore/ # Microservice 3 (data parsing)
+├── ram/ # Microservice 4 (data parsing)
+├── docker-compose.yml # Docker configuration
+└── README.md # This file
 
-Scalable architecture
+yaml
+Copy
+Edit
 
-🏗 Architecture
-├── api-gateway/          # Main service (HTTP routing, aggregation)
-├── bitshop/              # Microservice 1 (data parsing)
-├── jetman/               # Microservice 2 (data parsing)
-├── xcore/                # Microservice 3 (data parsing)
-├── ram/                  # Microservice 4 (data parsing)
-├── docker-compose.yml    # Docker configuration
-└── README.md             # This file
+**Tech stack**:  
+- 🐳 Docker  
+- ⚙️ Docker Compose  
+- 💻 Go 1.23.2+  
 
+---
 
-Docker
+## ▶️ Getting Started
 
-Docker Compose
-
-Go 1.23.2+
-
-Run the project
-
-Build and start containers:
-
-docker-compose up --build
-
-
-Check if the server is running:
-
+### 1. Build and start containers
+bash
+docker-compose up --build 
+2. Check server status
+bash
+Copy
+Edit
 curl http://localhost/api/v1/status
-
-
-Example requests:
-
+3. Example API requests
+bash
+Copy
+Edit
+# Search in a single service
 curl -X POST "http://localhost/api/v1/search?query=..."
+
+# Aggregate results from all services
 curl -X POST "http://localhost/api/v1/searchAll?query=..."
-
  API Endpoints
+Method	Endpoint	Description
+POST	/api/v1/search?query=...	Search in a single service
+POST	/api/v1/searchAll?query=...	Aggregate results from all services
 
-POST /api/v1/search — Search a single service
+Improvements
+ Use configuration files instead of hardcoded values
 
-POST /api/v1/searchAll — Aggregate results from all services
+ Host databases in separate Docker containers instead of a single instance
 
-Area for Improvements
+ Add centralized logging & monitoring (e.g., Prometheus + Grafana)
 
-Use configuration files instead of hardcoded values
+ Implement retries and fault tolerance for failed parsers
 
-Host databases in separate Docker containers instead of a single instance
+ Introduce a message queue (e.g., Kafka, RabbitMQ) for async processing
 
-Add centralized logging and monitoring (e.g., Prometheus + Grafana)
+ Add authentication & rate limiting in API Gateway
 
-Implement retries and fault tolerance for failed parsers
+ Provide Helm charts for Kubernetes deployment
 
-Introduce message queue (e.g., Kafka, RabbitMQ) for asynchronous processing
+ License
+MIT License. Feel free to use and contribute.
 
-Add authentication and rate-limiting to the API Gateway
-
-Provide Helm charts for Kubernetes deployment
+arduino
+Copy
+Edit
