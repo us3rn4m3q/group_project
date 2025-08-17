@@ -61,7 +61,7 @@ Method	Endpoint	Description
 POST	/api/v1/search?query=...	Search in a single service
 POST	/api/v1/searchAll?query=...	Aggregate results from all services
 
-Improvements
+# Area for Improvements
  Use configuration files instead of hardcoded values
 
  Host databases in separate Docker containers instead of a single instance
@@ -76,9 +76,5 @@ Improvements
 
  Provide Helm charts for Kubernetes deployment
 
- License
+ # License
 MIT License. Feel free to use and contribute.
-
-arduino
-Copy
-Edit
