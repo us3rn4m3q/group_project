@@ -1,46 +1,72 @@
-# Микросервисный парсер сайтов
+Website Parsing Microservices
 
-Проект представляет собой микросервисную архитектуру для парсинга данных с различных веб-сайтов. Система построена с использованием Docker и включает в себя несколько независимых сервисов.
+This project implements a microservice-based architecture for parsing data from various websites. The system is built with Docker and consists of multiple independent services.
 
-## 🚀 Возможности
+ Features
 
-- Параллельный парсинг нескольких сайтов
-- REST API для управления парсерами
-- Сохранение истории и результатов парсинга
-- Контейнеризация всех компонентов
-- Централизованная маршрутизация через API Gateway
-- Масштабируемая архитектура
+Parallel parsing of multiple websites
 
-## 🏗 Архитектура
+REST API for managing parsers
 
-├── api-gateway/          # Основной сервис (HTTP-роутинг, агрегация)
-├── bitshop/             # Микросервис 1 (парсинг данных)
-├── jetman/              # Микросервис 2 (парсинг данных)
-├── xcore/               # Микросервис 3 (парсинг данных)
-├── ram/                 # Микросервис 4 (парсинг данных)
-├── docker-compose.yml   # Конфигурация Docker
-└── README.md            # Этот файл
+Persistent storage of parsing history and results
 
-- Docker
-- Docker Compose
-- Go 1.23.2+
+Full containerization of all components
 
-1. Билдим докер:
-```bash
+Centralized routing through API Gateway
+
+Scalable architecture
+
+🏗 Architecture
+├── api-gateway/          # Main service (HTTP routing, aggregation)
+├── bitshop/              # Microservice 1 (data parsing)
+├── jetman/               # Microservice 2 (data parsing)
+├── xcore/                # Microservice 3 (data parsing)
+├── ram/                  # Microservice 4 (data parsing)
+├── docker-compose.yml    # Docker configuration
+└── README.md             # This file
+
+
+Docker
+
+Docker Compose
+
+Go 1.23.2+
+
+Run the project
+
+Build and start containers:
+
 docker-compose up --build
-```
 
-2. Проверяем поднят ли сервер:
-```bash
+
+Check if the server is running:
+
 curl http://localhost/api/v1/status
-```
 
-3. Чтобы сделать запросы с помощью curl
-```bash
-    curl -X POST "http://localhost/api/v1/search?query=..."
-    curl -X POST "http://localhost/api/v1/searchAll?query=..."
-```
 
-## 📌 API Endpoints
+Example requests:
 
-### Парсинг сайтов
+curl -X POST "http://localhost/api/v1/search?query=..."
+curl -X POST "http://localhost/api/v1/searchAll?query=..."
+
+ API Endpoints
+
+POST /api/v1/search — Search a single service
+
+POST /api/v1/searchAll — Aggregate results from all services
+
+Area for Improvements
+
+Use configuration files instead of hardcoded values
+
+Host databases in separate Docker containers instead of a single instance
+
+Add centralized logging and monitoring (e.g., Prometheus + Grafana)
+
+Implement retries and fault tolerance for failed parsers
+
+Introduce message queue (e.g., Kafka, RabbitMQ) for asynchronous processing
+
+Add authentication and rate-limiting to the API Gateway
+
+Provide Helm charts for Kubernetes deployment
