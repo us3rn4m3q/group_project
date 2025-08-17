@@ -16,7 +16,7 @@ The system is built with **Docker** and consists of multiple independent service
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ├── api-gateway/ # Main service (HTTP routing, aggregation)
 ├── bitshop/ # Microservice 1 (data parsing)
@@ -31,13 +31,13 @@ Copy
 Edit
 
 **Tech stack**:  
-- 🐳 Docker  
-- ⚙️ Docker Compose  
-- 💻 Go 1.23.2+  
+-  Docker  
+-  Docker Compose  
+-  Go 1.23.2+  
 
 ---
 
-## ▶️ Getting Started
+##  Getting Started
 
 ### 1. Build and start containers
 bash
